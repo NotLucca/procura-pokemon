@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="poke-app">
+        <form>
+            <input type="text" placeholder="Procure um pokemon">
+            <input type="submit" value="Search">
+        </form>
+        <div class="pokemon-container"></div>
+    </div>
+
+</body>
+<script>
+    const pokemonContainer = document.querySelector('.pokemon-container');
+    const formEl = document.querySelector('form');
+    const inputEl = document.querySelector('input[type=text]');
+
+    formEl.addEventListener("submit", (e) => {
+        e.preventDefault();
+        pokemonContainer.innerHTML = "";
+        getPokemon(inputEl.value);
+
+    })
+
+    function getPokemon(name) {
+        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            .then(response => response.json())
+            .then(pokemon => {
+                pokemonContainer.innerHTML = `
+                <div class="pokemon-card">
+                    <img src="${pokemon.sprites.front_default}" alt="">
+                    <h2>${pokemon.name}</h2>
+                    <p id="peso">Peso: ${pokemon.weight}kg</p>
+                    <p id="altura">Altura: ${pokemon.height}m</p>
+                    <p id="tipo">Tipo: ${pokemon.types[0].type.name}</p>
+                    <p id="habilidade">Habilidades:${pokemon.abilities[0].ability.name}</p>
+                    
+                </div>
+            `
+            })
+    }
+</script>
+
+</html>
